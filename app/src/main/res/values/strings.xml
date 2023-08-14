@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Qupris</string>
+    <string-array name="test_rows_app_names_example">
+        <item>app 1</item>
+        <item>app 2</item>
+        <item>app 3</item>
+        <item>app 4</item>
+        <item>app 5</item>
+        <item>app 6</item>
+        <item>app 7</item>
+        <item>app 8</item>
+        <item>app 9</item>
+        <item>app 10</item>
+    </string-array>
+
+    <string-array name="test_rows_app_packagename_example">
+        <item>packagename 1</item>
+        <item>packagename 2</item>
+        <item>packagename 3</item>
+        <item>packagename 4</item>
+        <item>packagename 5</item>
+        <item>packagename 6</item>
+        <item>packagename 7</item>
+        <item>packagename 8</item>
+        <item>packagename 9</item>
+        <item>packagename 10</item>
+    </string-array>
+
+    <integer-array name="test_rows_app_score_example">
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>4</item>
+        <item>1</item>
+        <item>8</item>
+        <item>6</item>
+    </integer-array>
+
+    <string-array name="test_rows_app_piis_example">
+        <item>location, cenas, cenas2, cenas3 </item>
+        <item>camera, cenas, cenas2, cenas3 </item>
+        <item>microphone, cenas, cenas2, cenas3 </item>
+        <item>location, cenas, cenas2, cenas3 </item>
+        <item>camera, cenas, cenas2, cenas3 </item>
+        <item>microphone, cenas, cenas2, cenas3 </item>
+        <item>location, cenas, cenas2, cenas3 </item>
+        <item>camera, cenas, cenas2, cenas3 </item>
+        <item>microphone, cenas, cenas2, cenas3 </item>
+        <item>location, cenas, cenas2, cenas3 </item>
+    </string-array>
+</resources>
+
+

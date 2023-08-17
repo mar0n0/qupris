@@ -1,20 +1,26 @@
 package com.qupris;
 
+import android.graphics.drawable.Drawable;
+
 import java.util.ArrayList;
 
 public class AppModel {
     String name;
     String package_name;
+    int version;
     String piis;
     int score;
-    int image;
+    Drawable image;
+    boolean isAnalyzed;
 
-    public AppModel(String name, String package_name, int score, int image, String piis) {
+    public AppModel(String name, String package_name, int version, int score, Drawable image, String piis, boolean isAnalyzed) {
         this.piis = piis;
         this.name = name;
         this.package_name = package_name;
+        this.version = version;
         this.score = score;
         this.image = image;
+        this.isAnalyzed = isAnalyzed;
     }
 
     public String getName() {
@@ -29,7 +35,7 @@ public class AppModel {
         return score;
     }
 
-    public int getImage() {
+    public Drawable getImage() {
         return image;
     }
 
@@ -43,5 +49,17 @@ public class AppModel {
 
     public void setPiis(String piis) {
         this.piis = piis;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public boolean isAnalyzed() {
+        return isAnalyzed;
+    }
+
+    public void setAnalyzed(boolean analyzed) {
+        isAnalyzed = analyzed;
     }
 }

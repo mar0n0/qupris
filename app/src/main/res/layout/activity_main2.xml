@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_layout_activity_2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/layout_bg">
@@ -45,10 +46,24 @@
         app:layout_constraintTop_toBottomOf="@+id/app_name_m2" />
 
     <TextView
+        android:id="@+id/version_m2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="version"
+        android:textColor="#DAC3C3"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_packagename_m2" />
+
+
+    <TextView
         android:id="@+id/app_score_m2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="76dp"
         android:text="0"
         android:textColor="@color/white"
         android:textSize="60sp"
@@ -70,45 +85,45 @@
         app:layout_constraintTop_toBottomOf="@+id/app_packagename_m2"
         app:layout_constraintVertical_bias="0.894" />
 
+
     <TextView
         android:id="@+id/piis_text_m2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:textSize="20sp"
-        android:textColor="@color/white"
+        android:layout_marginTop="24dp"
         android:text="Potential Information Collected"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_score_m2" />
 
-    <TextView
-        android:id="@+id/piis_m2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:textSize="15sp"
-        android:text="Piis description"
-        android:textColor="@color/white"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/method_recyclerview"
+        android:layout_width="409dp"
+        android:layout_height="153dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/piis_text_m2" />
 
     <TextView
-        android:id="@+id/version_m2"
+        android:id="@+id/no_piis"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="version"
-        android:textColor="#DAC3C3"
-        android:textSize="15sp"
+        android:text="TextView"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_packagename_m2" />
+        app:layout_constraintTop_toBottomOf="@+id/piis_text_m2"
+        android:textColor="@color/white"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class NetworkUtilities {
 
@@ -14,8 +15,8 @@ public class NetworkUtilities {
         try {
             URL url = new URL(Url);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000); /*milliseconds*/
-            conn.setConnectTimeout(15000); /* milliseconds */
+            conn.setReadTimeout(600000); /* 600 000 milliseconds = 10 min */
+            conn.setConnectTimeout(600000); /*600 000 milliseconds = 10 min*/
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);

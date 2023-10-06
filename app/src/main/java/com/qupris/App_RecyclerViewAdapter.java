@@ -2,6 +2,7 @@ package com.qupris;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -64,6 +66,14 @@ public class App_RecyclerViewAdapter extends RecyclerView.Adapter<App_RecyclerVi
             holder.analyzeButton.setVisibility(View.VISIBLE);
         }
 
+        if (appModels.get(position).isSystemApp()){
+            holder.tv_system_app.setText("System App");
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.purple_200));
+        } else{
+            holder.tv_system_app.setText("User App");
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.purple_300));
+        }
+
     }
 
 
@@ -71,19 +81,22 @@ public class App_RecyclerViewAdapter extends RecyclerView.Adapter<App_RecyclerVi
     // Creating variables with the rows
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
+        CardView cardView;
         ImageView app_image;
-        TextView tv_name, tv_packagename, tv_version, tv_score;
+        TextView tv_name, tv_packagename, tv_version, tv_score, tv_system_app;
         FloatingActionButton analyzeButton;
 
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
+            cardView = itemView.findViewById(R.id.card_view);
             app_image = itemView.findViewById(R.id.imageView); //Image
             tv_name = itemView.findViewById(R.id.textView); //Name
             tv_packagename = itemView.findViewById(R.id.textView2); //PackageName
             tv_version = itemView.findViewById(R.id.textView4); //Version
             tv_score = itemView.findViewById(R.id.textView3); //Score
-            analyzeButton = itemView.findViewById(R.id.analyzeButton);
+            tv_system_app = itemView.findViewById(R.id.textView5); //System App
+            analyzeButton = itemView.findViewById(R.id.analyzeButton); //Analyze Button
 
             // App analyze button
             analyzeButton.setOnClickListener(new View.OnClickListener() {

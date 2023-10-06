@@ -18,105 +18,53 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class PII_RecyclerViewAdapter extends RecyclerView.Adapter<PII_RecyclerViewAdapter.MyViewHolder> {
+public class Method_RecyclerViewAdapter extends RecyclerView.Adapter<Method_RecyclerViewAdapter.MyViewHolder> {
 
-    private final RecyclerViewInterface recyclerViewInterface;
+
     Context context;
-    ArrayList<AppModel> appModels;
+    ArrayList<MethodModel> methodModels;
 
-    public PII_RecyclerViewAdapter(Context context, ArrayList<AppModel> appModels, RecyclerViewInterface recyclerViewInterface) {
-        this.recyclerViewInterface = recyclerViewInterface;
+    public Method_RecyclerViewAdapter(Context context, ArrayList<MethodModel> methodModels) {
         this.context = context;
-        this.appModels = appModels;
+        this.methodModels = methodModels;
     }
 
     @NonNull
     @Override
     // This is where you inflate the layout (Giving a look to our rows)
-    public PII_RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Method_RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recyclerview_row, parent, false);
-        return new PII_RecyclerViewAdapter.MyViewHolder(view, recyclerViewInterface);
+        View view = inflater.inflate(R.layout.method_recyclerview_row, parent, false);
+        return new Method_RecyclerViewAdapter.MyViewHolder(view);
     }
 
     @Override
     // The number of items you want to display
     public int getItemCount() {
-        return appModels.size();
+        return methodModels.size();
     }
 
 
     @Override
     // Assigning values to each row when they are going back to the screen
-    public void onBindViewHolder(@NonNull PII_RecyclerViewAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull Method_RecyclerViewAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
-        holder.tv_name.setText(appModels.get(position).getName()); //Name
-        holder.tv_packagename.setText(appModels.get(position).getPackage_name()); //Package Name
-        holder.tv_version.setText(String.valueOf(appModels.get(position).getVersion())); //Version
-        holder.app_image.setImageDrawable(appModels.get(position).getImage()); //Image
-
-        if (appModels.get(position).isAnalyzed()){
-            holder.analyzeButton.setVisibility(View.GONE);
-            holder.tv_score.setVisibility(View.VISIBLE);
-            holder.tv_score.setText(String.valueOf(appModels.get(position).getScore())); //Score
-        } else{
-            holder.analyzeButton.setVisibility(View.VISIBLE);
-        }
+        holder.tv_method.setText(methodModels.get(position).getMethod()); //Method
+        holder.tv_pii.setText(methodModels.get(position).getPii()); //PII
 
     }
-
 
 
     // Creating variables with the rows
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView app_image;
-        TextView tv_name, tv_packagename, tv_version, tv_score;
-        FloatingActionButton analyzeButton;
+        TextView tv_method, tv_pii;
 
-        public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            app_image = itemView.findViewById(R.id.imageView); //Image
-            tv_name = itemView.findViewById(R.id.textView); //Name
-            tv_packagename = itemView.findViewById(R.id.textView2); //PackageName
-            tv_version = itemView.findViewById(R.id.textView4); //Version
-            tv_score = itemView.findViewById(R.id.textView3); //Score
-            analyzeButton = itemView.findViewById(R.id.analyzeButton);
-
-            // App analyze button
-            analyzeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(recyclerViewInterface != null){
-                        int pos = getAdapterPosition();
-
-                        if (pos != RecyclerView.NO_POSITION){
-                            try {
-                                recyclerViewInterface.onAnalyseButtonClick(pos);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-            });
-
-            // App information button
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(recyclerViewInterface != null){
-                        int pos = getAdapterPosition();
-
-                        if (pos != RecyclerView.NO_POSITION){
-                            recyclerViewInterface.onItemClick(pos);
-                        }
-                    }
-                }
-            });
+            tv_method = itemView.findViewById(R.id.method); //Image
+            tv_pii = itemView.findViewById(R.id.pii); //Name
 
         }
     }

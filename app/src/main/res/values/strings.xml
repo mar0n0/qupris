@@ -1,5 +1,23 @@
 <resources>
     <string name="app_name">Qupris</string>
+
+    <string-array name="teste_method">
+        <item>method 1</item>
+        <item>method 2</item>
+        <item>method 3</item>
+        <item>method 4</item>
+        <item>method 5</item>
+        <item>method 6</item>
+    </string-array>
+
+    <string-array name="teste_pii">
+        <item>pii 1</item>
+        <item>pii 2</item>
+        <item>pii 3</item>
+        <item>pii 4</item>
+        <item>pii 5</item>
+        <item>pii 6</item>
+    </string-array>
 </resources>
 
 

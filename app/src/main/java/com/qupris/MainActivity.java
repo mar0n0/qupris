@@ -20,6 +20,8 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
     // Setup the app models information
     // TODO: Add methods that will grab device apps and populate the app_models variable to create the recyclerview
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void setUpAppModels() throws PackageManager.NameNotFoundException {
         PackageManager packageManager = getPackageManager();
         List<ApplicationInfo> installedApps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
@@ -74,12 +77,30 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
             String packageName = appInfo.packageName; //Package Name
 
-            if(!isSystemPackage(appInfo) && !Objects.equals(packageName, "com.qupris")) { //Verify if it is a system app or my app
+            //if(!isSystemPackage(appInfo) && !Objects.equals(packageName, "com.qupris")) { //Verify if it is a system app or my app
 
                 String appName = appInfo.loadLabel(packageManager).toString(); //Name
 
-                Resources res = packageManager.getResourcesForApplication(appInfo);
-                Drawable appIcon = res.getDrawableForDensity(appInfo.icon, DisplayMetrics.DENSITY_XXXHIGH, null); //Image
+                Drawable appIcon;
+
+                //if(!isSystemPackage(appInfo)){
+                //    Resources res = packageManager.getResourcesForApplication(appInfo);
+                //    appIcon = res.getDrawableForDensity(appInfo.icon, DisplayMetrics.DENSITY_XXXHIGH, null); //Image
+                //} else{
+                //    Resources res = getResources();
+                //    int drawableResourceId = R.drawable.ic_launcher_foreground;
+                //    appIcon = res.getDrawable(drawableResourceId);
+                //}
+
+                try{
+                    Resources res = packageManager.getResourcesForApplication(appInfo);
+                    appIcon = res.getDrawableForDensity(appInfo.icon, DisplayMetrics.DENSITY_XXXHIGH, null); //Image
+                }catch (Exception e){
+                    Resources res = getResources();
+                    int drawableResourceId = R.drawable.ic_launcher_foreground;
+                    appIcon = res.getDrawable(drawableResourceId);
+                }
+                appIcon = resize_icon(appIcon);
 
                 PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
                 int version = packageInfo.versionCode; //VersionCode
@@ -93,12 +114,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                     isAnalyzed = true;
                 }
 
-                AppModel app = new AppModel(appName, packageName, version, score, appIcon, pii, isAnalyzed);
+                AppModel app = new AppModel(appName, packageName, version, score, appIcon, pii, isAnalyzed, isSystemPackage(appInfo));
                 app_models.add(app);
-            }
+            //}
         }
 
 
+    }
+
+    private Drawable resize_icon(Drawable appIcon){
+        int desiredSize = 220;
+        Bitmap bitmap = Bitmap.createBitmap(desiredSize, desiredSize, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        appIcon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        appIcon.draw(canvas);
+
+        Drawable scaledIcon = new BitmapDrawable(getResources(), bitmap);
+        return scaledIcon;
     }
 
     // Get Score from content provider
@@ -163,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         intent.putExtra("VERSION", app_models.get(position).getVersion());
         intent.putExtra("SCORE", app_models.get(position).getScore());
         intent.putExtra("PIIS", app_models.get(position).getPiis());
+        intent.putExtra("SYSTEM_APP", app_models.get(position).isSystemApp());
 
         startActivity(intent);
     }
@@ -171,9 +204,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
     // Create method to make post request on clicking in button to analyze
     @Override
     public void onAnalyseButtonClick(int position) {
-
-        String package_name = app_models.get(position).getPackage_name();
-        int version = app_models.get(position).getVersion();
 
         //TODO: Make post request
         Toast.makeText(this, "Making Post Request", Toast.LENGTH_SHORT).show();
@@ -190,14 +220,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
             e.printStackTrace();
         }
 
-        //PostDataAsync postData = new PostDataAsync(app_models.get(position));
-        //postData.execute("http://127.0.0.1:9000/analysis", jsonString);
-        int score = 0;
-        String piis = "";
-        saveScoreCP(app_models.get(position), score, piis);
+        PostDataAsync postData = new PostDataAsync(app_models.get(position));
+        postData.execute("http://127.0.0.1:9000/analysis", jsonString);
 
-        //TODO: Save Response to content provider
-        Toast.makeText(this, "Saving information to content provider", Toast.LENGTH_SHORT).show();;
 
 
     }
@@ -206,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
     @SuppressLint("Range")
     private void saveScoreCP(AppModel app, int score, String piis){
 
+        Toast.makeText(this, "Saving information to content provider", Toast.LENGTH_SHORT).show();
 
         String selection = "packagename = ? AND version = ?";
         String[] selectionArgs = new String[] {app.getPackage_name(), String.valueOf(app.getVersion())};
@@ -253,20 +279,21 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                 JSONObject obj = new JSONObject(result);
                 Log.d("Response: ", obj.toString());
 
-                int score = Integer.valueOf(obj.getString("score"));
-                String piis = obj.getString("piis");
+                if(obj.has("error")){
+                    Toast.makeText(getBaseContext(), obj.getString("error"), Toast.LENGTH_LONG).show();
+                } else{
+                    int score = Integer.parseInt(obj.getString("score"));
+                    String piis = obj.getString("piis");
 
-                Log.d("Score: ", String.valueOf(score));
-                Log.d("Piis: ", piis);
+                    Log.d("Score: ", String.valueOf(score));
+                    Log.d("Piis: ", piis);
+                    Toast.makeText(getBaseContext(), "Saving App information!", Toast.LENGTH_LONG).show();
+                    saveScoreCP(app, score, piis); //Save information in content provider
+                }
 
-                saveScoreCP(app, score, piis); //Save information in content provider
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
-
-
         }
     }
 }

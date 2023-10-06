@@ -12,8 +12,9 @@ public class AppModel {
     int score;
     Drawable image;
     boolean isAnalyzed;
+    boolean isSystemApp;
 
-    public AppModel(String name, String package_name, int version, int score, Drawable image, String piis, boolean isAnalyzed) {
+    public AppModel(String name, String package_name, int version, int score, Drawable image, String piis, boolean isAnalyzed, boolean isSystemApp) {
         this.piis = piis;
         this.name = name;
         this.package_name = package_name;
@@ -21,6 +22,7 @@ public class AppModel {
         this.score = score;
         this.image = image;
         this.isAnalyzed = isAnalyzed;
+        this.isSystemApp = isSystemApp;
     }
 
     public String getName() {
@@ -61,5 +63,9 @@ public class AppModel {
 
     public void setAnalyzed(boolean analyzed) {
         isAnalyzed = analyzed;
+    }
+
+    public boolean isSystemApp() {
+        return isSystemApp;
     }
 }
